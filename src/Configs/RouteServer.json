@@ -1,0 +1,6 @@
+{
+  "Root"               : "https://localhost:5001"      ,
+  "AllRootCategory"    : "/admin/root-category"        ,
+  "CreateRootCategory" : "/admin/root-category/create" ,
+  "DeleteRootCategory" : "/admin/root-category/delete/"
+}

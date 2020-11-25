@@ -71,6 +71,12 @@ class SideBar extends React.Component
                             </Link>
                         </li>
 
+                        <li className={`${window.location.pathname === RouteConfig.AllRootCategoryPage ? "active" : ""}`}>
+                            <Link onClick={this.onClickLink} className="nav-link" to={`${RouteConfig.AllRootCategoryPage}`}>
+                                <i className="fas fa-meteor"/><span>لیست دسته بندی های اصلی</span>
+                            </Link>
+                        </li>
+
                         <li className={`${window.location.pathname === RouteConfig.CreateRootCategoryPage ? "active" : ""}`}>
                             <Link onClick={this.onClickLink} className="nav-link" to={`${RouteConfig.CreateRootCategoryPage}`}>
                                 <i className="fas fa-meteor"/><span>ساخت دسته بندی اصلی</span>

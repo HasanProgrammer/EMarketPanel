@@ -1,0 +1,39 @@
+.cell
+{
+    text-align: center !important;
+    vertical-align: center !important;
+    justify-content: center !important;
+    cursor: default !important;
+}
+
+/*Sweet Alert's Style*/
+.swal-modal
+{
+    border-radius: 0px !important;
+    text-align: center;
+}
+.swal-text
+{
+    text-align: center;
+    padding-right: 22px;
+    padding-left: 22px;
+    cursor: default;
+}
+.swal-button
+{
+    border-radius: 0px !important;
+    padding: 7px 19px;
+    font-size: 15px;
+    font-weight: normal;
+    outline: none !important;
+    border: 0px !important;
+}
+.swal-button:focus
+{
+    box-shadow: none;
+}
+.swal-footer
+{
+    text-align: center;
+    direction: ltr;
+}

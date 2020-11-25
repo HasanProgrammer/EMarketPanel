@@ -4,6 +4,13 @@ import React from "react";
 
 //Components
 
+//Configs
+import RouteServer from "./../../Configs/RouteServer";
+
+//Plugins
+import Axios from "axios";
+import { toast as Toast, ToastContainer } from "react-toastify";
+
 /**
  * @class HomePage
  */
@@ -14,14 +21,38 @@ class CreatePage extends React.Component
      */
     state =
     {
-
+        Name  : null,
+        Slug  : null,
+        Status: null
     };
+
+    /**
+     * @function constructor
+     * @param    props
+     */
+    constructor(props)
+    {
+        super(props);
+
+        this.statusFieldRef = React.createRef();
+    }
 
     /**
      * @function render
      */
     render()
     {
+        console.log(this.state.Status + " " + this.state.Name + " " + this.state.Slug);
+
+        const ButtonCreateCategoryStyle =
+        {
+            fontWeight   : "normal",
+            borderRadius : "30px",
+            fontSize     : "15px",
+            padding      : "0.8em",
+            width        : "13em"
+        };
+
         return (
             <div className="main-content">
                 <section className="section">
@@ -29,16 +60,7 @@ class CreatePage extends React.Component
                         <div className="row">
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                 <div className="section-header-breadcrumb-content">
-                                    <h1>ایجاد پست جدید</h1>
-                                    <div className="section-header-breadcrumb">
-                                        <div className="breadcrumb-item active">
-                                            <a href="#">
-                                                <i className="fas fa-home"/>
-                                            </a>
-                                        </div>
-                                        <div className="breadcrumb-item"><a href="#">صفحات مورد نیاز</a></div>
-                                        <div className="breadcrumb-item"><a href="#">ایجاد پست جدید</a></div>
-                                    </div>
+                                    <h1>ایجاد دسته بندی ( شاخه ) جدید</h1>
                                 </div>
                             </div>
                         </div>
@@ -46,66 +68,39 @@ class CreatePage extends React.Component
                     <div className="section-body">
                         <div className="row">
                             <div className="col-12">
-                                <div className="card">
+                                <div className="card" style={{borderRadius: "0"}}>
                                     <div className="card-header">
-                                        <h4>پست خود را بنویسید</h4>
+                                        <h4>دسته بندی خود را ایجاد نمایید</h4>
                                     </div>
                                     <div className="card-body">
                                         <div className="form-group row mb-4">
-                                            <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">عنوان</label>
-                                            <div className="col-sm-12 col-md-7" style={{borderRadius: "0 !important"}}>
-                                                <input type="text" className="form-control" style={{borderRadius: "0 !important"}}/>
+                                            <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">نام دسته بندی</label>
+                                            <div className="col-sm-12 col-md-7" style={{borderRadius: "0"}}>
+                                                <input name="Name" type="text" className="form-control" style={{borderRadius: "0"}} onChange={this.onChangeTextInInputName}/>
                                             </div>
                                         </div>
+
                                         <div className="form-group row mb-4">
-                                            <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">دسته بندی</label>
-                                            <div className="col-sm-12 col-md-7" style={{borderRadius: "0 !important"}}>
-                                                <select className="form-control selectric" style={{borderRadius: "0 !important"}}>
-                                                    <option>فنی</option>
-                                                    <option>اخبار</option>
-                                                    <option>سیاسی</option>
+                                            <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">نام یکتای دسته بندی</label>
+                                            <div className="col-sm-12 col-md-7" style={{borderRadius: "0"}}>
+                                                <input name="Slug" type="text" className="form-control" style={{borderRadius: "0"}} onChange={this.onChangeTextInInputSlug}/>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group row mb-4">
+                                            <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">وضعیت</label>
+                                            <div className="col-sm-12 col-md-7" style={{borderRadius: "0"}}>
+                                                <select ref={this.statusFieldRef} name="Status" className="form-control selectric" style={{borderRadius: "0"}} onChange={this.onSelectedOptionInSelectBox}>
+                                                    <option selected value="1">فعال</option>
+                                                    <option value="0">غیر فعال</option>
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div className="form-group row mb-4">
-                                            <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">محتوا</label>
-                                            <div className="col-sm-12 col-md-7" style={{borderRadius: "0 !important"}}>
-                                                <textarea className="summernote-simple" style={{borderRadius: "0 !important"}}/>
-                                            </div>
-                                        </div>
-                                        <div className="form-group row mb-4">
-                                            <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">بند انگشتی</label>
+                                            <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3"/>
                                             <div className="col-sm-12 col-md-7">
-                                                <div id="image-preview" className="image-preview" style={{borderRadius: "0 !important"}}>
-                                                    <label htmlFor="image-upload" id="image-label">انتخاب فایل</label>
-                                                    <input type="file" name="image" id="image-upload" style={{borderRadius: "0 !important"}}/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="form-group row mb-4">
-                                            <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">برچسب
-                                                ها</label>
-                                            <div className="col-sm-12 col-md-7">
-                                                <input type="text" className="form-control inputtags" style={{borderRadius: "0 !important"}}/>
-                                            </div>
-                                        </div>
-                                        <div className="form-group row mb-4">
-                                            <label
-                                                className="col-form-label text-md-right col-12 col-md-3 col-lg-3">وضعیت</label>
-                                            <div className="col-sm-12 col-md-7" style={{borderRadius: "0 !important"}}>
-                                                <select className="form-control selectric" style={{borderRadius: "0 !important"}}>
-                                                    <option>انتشار</option>
-                                                    <option>پیش نویس</option>
-                                                    <option>در انتظار</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className="form-group row mb-4">
-                                            <label
-                                                className="col-form-label text-md-right col-12 col-md-3 col-lg-3"/>
-                                            <div className="col-sm-12 col-md-7">
-                                                <button className="btn btn-primary" style={{borderRadius: "0 !important"}}>ایجاد پست
-                                                </button>
+                                                <button type="button" onClick={this.CreateCategory} className="btn btn-primary" style={ButtonCreateCategoryStyle}>ایجاد دسته بندی</button>
                                             </div>
                                         </div>
                                     </div>
@@ -116,6 +111,94 @@ class CreatePage extends React.Component
                 </section>
             </div>
         )
+    }
+
+    /**
+     * @function componentDidMount
+     */
+    componentDidMount()
+    {
+        //console.log( this.myRef.current.value );
+
+        this.setState({
+            Status: this.statusFieldRef.current.value
+        });
+    }
+
+    /*---------------------------------------------------------------CUSTOM---------------------------------------------------------------*/
+
+    /**
+     * @function onSelectedOptionInSelectBox
+     */
+    onSelectedOptionInSelectBox = (event) =>
+    {
+        //console.log(event.target.value);
+        this.setState({
+            Status: event.target.value
+        });
+    };
+
+    /**
+     * @function onSelectedOptionInSelectBox
+     */
+    onChangeTextInInputName = (event) =>
+    {
+        //console.log(event.target.value);
+        this.setState({
+            Name: event.target.value
+        });
+    };
+
+    /**
+     * @function onChangeTextInInputSlug
+     */
+    onChangeTextInInputSlug = (event) =>
+    {
+        //console.log(event.target.value);
+        this.setState({
+            Slug: event.target.value
+        });
+    };
+
+    /**
+     * @function CreateCategory
+     */
+    CreateCategory = async () =>
+    {
+        //console.log(`${RouteServer.Root + RouteServer.CreateRootCategory}`);
+
+        let Data = {
+            Name   : this.state.Name,
+            Slug   : this.state.Slug,
+            Status : this.state.Status
+        };
+
+        let Config = {
+            headers: {
+                "Content-Type" : "application/json"
+            }
+        };
+
+        await Axios.put(`${RouteServer.Root + RouteServer.CreateRootCategory}`, JSON.stringify(Data), Config).then(response => {
+
+            Toast.success(response.data.msg);
+            console.log(response.data.msg);
+
+        }).catch(response => {
+
+            console.log(response);
+
+            if(typeof response.response.data.body.errors != "undefined")
+            {
+                Toast.error(response.response.data.msg);
+                response.response.data.body.errors.map(error => {
+
+                    Toast.error(error);
+
+                });
+            }
+
+        });
     }
 }
 

@@ -1,4 +1,5 @@
 {
-  "HomePage": "/",
-  "CreateRootCategoryPage": "/root-category/create"
+  "HomePage"               : "/",
+  "AllRootCategoryPage"    : "/root-category/all",
+  "CreateRootCategoryPage" : "/root-category/create"
 }

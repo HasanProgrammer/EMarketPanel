@@ -15,15 +15,6 @@ class NavBar extends React.Component
     state = {};
 
     /**
-     * @constructor
-     * @param props
-     */
-    // constructor(props)
-    // {
-    //     super(props);
-    // }
-
-    /**
      * @function render
      */
     render()
@@ -114,11 +105,9 @@ class NavBar extends React.Component
                         </li>
 
                         <li className="dropdown">
-                            <a href="#" data-toggle="dropdown"
-                               className="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                                <img alt="تصویر" src="/Assets/img/user.png"
-                                     className="user-img-radious-style"/>
-                                    <span className="d-sm-none d-lg-inline-block"/>
+                            <a href="#" data-toggle="dropdown" className="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                                <img alt="تصویر" src="/Assets/img/user.png" className="user-img-radious-style"/>
+                                <span className="d-sm-none d-lg-inline-block"/>
                             </a>
                             <div className="dropdown-menu dropdown-menu-right">
                                 <div className="dropdown-title">سلام مدیر</div>

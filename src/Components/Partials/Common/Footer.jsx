@@ -27,13 +27,11 @@ class Footer extends React.Component
     render()
     {
         return (
-            <div>
-                <footer className="main-footer">
-                    <div className="align-center">
-                        پنل ادمین پیشرفته حسن کرمی محب
-                    </div>
-                </footer>
-            </div>
+            <footer className="main-footer">
+                <div className="align-center">
+                    پنل ادمین پیشرفته حسن کرمی محب
+                </div>
+            </footer>
         );
     }
 }
