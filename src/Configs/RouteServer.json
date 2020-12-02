@@ -1,6 +1,10 @@
 {
-  "Root"               : "https://localhost:5001"      ,
-  "AllRootCategory"    : "/admin/root-category"        ,
-  "CreateRootCategory" : "/admin/root-category/create" ,
-  "DeleteRootCategory" : "/admin/root-category/delete/"
+  "Root"                 : "https://localhost:5001"         ,
+  "AllRootCategory"      : "/admin/root-category"           ,
+  "CreateRootCategory"   : "/admin/root-category/create"    ,
+  "FindRootCategory"     : "/admin/root-category/find/"     ,
+  "EditRootCategory"     : "/admin/root-category/edit/"     ,
+  "DeleteRootCategory"   : "/admin/root-category/delete/"   ,
+  "ActiveRootCategory"   : "/admin/root-category/active/"   ,
+  "InActiveRootCategory" : "/admin/root-category/inactive/"
 }

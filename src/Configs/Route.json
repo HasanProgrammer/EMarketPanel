@@ -1,5 +1,6 @@
 {
-  "HomePage"               : "/",
-  "AllRootCategoryPage"    : "/root-category/all",
-  "CreateRootCategoryPage" : "/root-category/create"
+  "HomePage"               : "/"                      ,
+  "AllRootCategoryPage"    : "/root-category/all"     ,
+  "CreateRootCategoryPage" : "/root-category/create"  ,
+  "EditRootCategoryPage"   : "/root-category/edit/:id"
 }

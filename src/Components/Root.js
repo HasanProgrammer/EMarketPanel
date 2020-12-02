@@ -7,6 +7,7 @@ import { BrowserRouter as Router , Switch , Route} from "react-router-dom";
 import MasterPage from "./MasterPage";
 import HomePage   from "./HomePage";
 import CreatePage from "./RootCategoryPages/CreatePage"
+import EditPage   from "./RootCategoryPages/EditPage";
 import IndexPage  from "./RootCategoryPages/IndexPage";
 
 //Configs
@@ -47,6 +48,8 @@ class Root extends React.Component
                         <Route path={`${RouteConfig.CreateRootCategoryPage}`}>
                             <CreatePage/>
                         </Route>
+
+                        <Route path={`${RouteConfig.EditRootCategoryPage}`} component={EditPage}/>
 
                     </MasterPage>
 

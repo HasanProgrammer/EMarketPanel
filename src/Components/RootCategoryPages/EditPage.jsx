@@ -9,18 +9,19 @@ import RouteServer from "./../../Configs/RouteServer";
 
 //Plugins
 import Axios from "axios";
-import { toast as Toast, ToastContainer } from "react-toastify";
+import { toast as Toast } from "react-toastify";
 
 /**
  * @class HomePage
  */
-class CreatePage extends React.Component
+class EditPage extends React.Component
 {
     /**
      * @property state
      */
     state =
     {
+        Id    : null,
         Name  : null,
         Slug  : null,
         Status: null
@@ -33,8 +34,6 @@ class CreatePage extends React.Component
     constructor(props)
     {
         super(props);
-
-        this.statusFieldRef = React.createRef();
     }
 
     /**
@@ -42,11 +41,21 @@ class CreatePage extends React.Component
      */
     componentDidMount()
     {
-        //console.log( this.myRef.current.value );
+        if(localStorage.getItem("category") != null)
+        {
+            //console.log( JSON.parse(localStorage.getItem("category")) );
 
-        this.setState({
-            Status: this.statusFieldRef.current.value
-        });
+            let category = JSON.parse(localStorage.getItem("category"));
+
+            this.setState({
+                Id     : category.id,
+                Name   : category.name,
+                Slug   : category.slug,
+                Status : category.statusCode
+            });
+
+            localStorage.removeItem("category");
+        }
     }
 
     /**
@@ -54,9 +63,7 @@ class CreatePage extends React.Component
      */
     render()
     {
-        console.log(this.state.Status + " " + this.state.Name + " " + this.state.Slug);
-
-        const ButtonCreateCategoryStyle =
+        const ButtonEditCategoryStyle =
         {
             fontWeight   : "normal",
             borderRadius : "30px",
@@ -72,7 +79,7 @@ class CreatePage extends React.Component
                         <div className="row">
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                 <div className="section-header-breadcrumb-content">
-                                    <h1>ایجاد دسته بندی ( شاخه ) جدید</h1>
+                                    <h1>ویرایش دسته بندی ( شاخه ) جدید</h1>
                                 </div>
                             </div>
                         </div>
@@ -82,29 +89,29 @@ class CreatePage extends React.Component
                             <div className="col-12">
                                 <div className="card" style={{borderRadius: "0"}}>
                                     <div className="card-header">
-                                        <h4>دسته بندی خود را ایجاد نمایید</h4>
+                                        <h4>دسته بندی خود را ویرایش نمایید</h4>
                                     </div>
                                     <div className="card-body">
                                         <div className="form-group row mb-4">
                                             <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">نام دسته بندی</label>
                                             <div className="col-sm-12 col-md-7" style={{borderRadius: "0"}}>
-                                                <input name="Name" type="text" className="form-control" style={{borderRadius: "0"}} onChange={this.onChangeTextInInputName}/>
+                                                <input onChange={this.onChangeTextInInputName} value={this.state.Name} type="text" className="form-control" style={{borderRadius: "0"}}/>
                                             </div>
                                         </div>
 
                                         <div className="form-group row mb-4">
                                             <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">نام یکتای دسته بندی</label>
                                             <div className="col-sm-12 col-md-7" style={{borderRadius: "0"}}>
-                                                <input name="Slug" type="text" className="form-control" style={{borderRadius: "0"}} onChange={this.onChangeTextInInputSlug}/>
+                                                <input onChange={this.onChangeTextInInputSlug} value={this.state.Slug?.replace("-", " ")} type="text" className="form-control" style={{borderRadius: "0"}}/>
                                             </div>
                                         </div>
 
                                         <div className="form-group row mb-4">
                                             <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3">وضعیت</label>
                                             <div className="col-sm-12 col-md-7" style={{borderRadius: "0"}}>
-                                                <select ref={this.statusFieldRef} name="Status" className="form-control selectric" style={{borderRadius: "0"}} onChange={this.onSelectedOptionInSelectBox}>
-                                                    <option selected value={1}>فعال</option>
-                                                    <option value={0}>غیر فعال</option>
+                                                <select onChange={this.onSelectedOptionInSelectBox} className="form-control selectric" style={{borderRadius: "0"}}>
+                                                    {this.state.Status == 1 ? (<option selected value={1}>فعال</option>)     : (<option value={1}>فعال</option>) }
+                                                    {this.state.Status == 0 ? (<option selected value={0}>غیر فعال</option>) : (<option value={0}>غیر فعال</option>) }
                                                 </select>
                                             </div>
                                         </div>
@@ -112,7 +119,7 @@ class CreatePage extends React.Component
                                         <div className="form-group row mb-4">
                                             <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3"/>
                                             <div className="col-sm-12 col-md-7">
-                                                <button type="button" onClick={this.CreateCategory} className="btn btn-primary" style={ButtonCreateCategoryStyle}>ایجاد دسته بندی</button>
+                                                <button onClick={this.EditCategory} type="button" className="btn btn-primary" style={ButtonEditCategoryStyle}>ویرایش دسته بندی</button>
                                             </div>
                                         </div>
                                     </div>
@@ -122,7 +129,7 @@ class CreatePage extends React.Component
                     </div>
                 </section>
             </div>
-        )
+        );
     }
 
     /*---------------------------------------------------------------CUSTOM---------------------------------------------------------------*/
@@ -132,8 +139,6 @@ class CreatePage extends React.Component
      */
     onSelectedOptionInSelectBox = (event) =>
     {
-        //console.log(event.target.value);
-
         this.setState({
             Status: parseInt(event.target.value)
         });
@@ -164,15 +169,13 @@ class CreatePage extends React.Component
     };
 
     /**
-     * @function CreateCategory
+     * @function EditCategory
      */
-    CreateCategory = async () =>
+    EditCategory = async () =>
     {
-        //console.log(`${RouteServer.Root + RouteServer.CreateRootCategory}`);
-
         let Data = {
             Name   : this.state.Name,
-            Slug   : this.state.Slug,
+            Slug   : this.state.Slug?.replace("-", " "),
             Status : this.state.Status
         };
 
@@ -182,28 +185,31 @@ class CreatePage extends React.Component
             }
         };
 
-        await Axios.put(`${RouteServer.Root + RouteServer.CreateRootCategory}`, JSON.stringify(Data), Config).then(response => {
+        if(this.state.Id != null)
+        {
+            await Axios.patch(`${RouteServer.Root + RouteServer.EditRootCategory + this.state.Id}`, JSON.stringify(Data), Config).then(response => {
 
-            //console.log(response?.data?.msg);
+                //console.log(response.data.msg);
 
-            Toast.success(response?.data?.msg);
+                Toast.success(response.data.msg);
 
-        }).catch(response => {
+            }).catch(response => {
 
-            //console.log(response);
+                //console.log(response);
 
-            Toast.error(response.response?.data?.msg);
-            if(typeof response?.response?.data?.body?.errors != "undefined")
-            {
-                response.response.data.body.errors.map(error => {
+                Toast.error(response.response.data?.msg);
+                if(typeof response.response.data?.body?.errors != "undefined")
+                {
+                    response.response.data.body.errors.map(error => {
 
-                    Toast.error(error);
+                        Toast.error(error);
 
-                });
-            }
+                    });
+                }
 
-        });
+            });
+        }
     }
 }
 
-export default CreatePage;
+export default EditPage;

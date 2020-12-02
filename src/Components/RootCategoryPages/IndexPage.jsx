@@ -1,10 +1,12 @@
-import React from "react";
+import React    from "react";
+import { Link } from "react-router-dom";
 
 /*-------------------------------------------------------------------*/
 
 //Components
 
 //Configs
+import Route       from "./../../Configs/Route";
 import RouteServer from "./../../Configs/RouteServer";
 
 //Plugins
@@ -101,7 +103,15 @@ class IndexPage extends React.Component
                                                                 <div className="badge badge-success" style={BadgeStyle}>{category.statusName}</div>
                                                             </td>
                                                             <td className="cell">
-                                                                <button onClick={this.onClickDeleteButton} id={category.id} className="btn btn-danger" style={{borderRadius: "0"}}>حذف</button>
+                                                                <Link id={category.id} onClick={this.onClickEditButton} to={`${Route.EditRootCategoryPage.replace(":id", category.id)}`} className="btn btn-warning action_button" style={{borderRadius: "0", }}>ویرایش</Link>
+                                                                <span>{" "}</span>
+                                                                {
+                                                                    category.statusCode == 0
+                                                                    ? (<button onClick={this.onClickActiveButton}   id={category.id} className="btn btn-success action_button" style={{borderRadius: "0", }}>فعال</button>)
+                                                                    : (<button onClick={this.onClickInActiveButton} id={category.id} className="btn btn-danger action_button"  style={{borderRadius: "0", }}>غیر فعال</button>)
+                                                                }
+                                                                <span>{" "}</span>
+                                                                <button onClick={this.onClickDeleteButton} id={category.id} className="btn btn-danger action_button" style={{borderRadius: "0", }}>حذف</button>
                                                             </td>
                                                         </tr>
                                                     ))
@@ -141,11 +151,18 @@ class IndexPage extends React.Component
     /*---------------------------------------------------------------CUSTOM---------------------------------------------------------------*/
 
     /**
+     * @function onClickEditButton
+     */
+    onClickEditButton = (event) =>
+    {
+        localStorage.setItem("category", JSON.stringify(this.state.Categories.find(category => category.id == event.target.id)));
+    };
+
+    /**
      * @function onClickDeleteButton
      */
     onClickDeleteButton = async (event) =>
     {
-
         const result = await swal
         (
             {
@@ -153,18 +170,18 @@ class IndexPage extends React.Component
                 icon    : "info",
                 buttons : ["نه، مایل به حذف نمی باشم" , "بله ، کاملا اطمینان دارم"]
             }
-        );
+        ); 
 
         if(result === true)
         {
-            let new_categories_list = this.state.Categories.filter(category => category.id != event.target.id);
+            let categories = this.state.Categories.filter(category => category.id != event.target.id);
 
             await Axios.post(`${RouteServer.Root + RouteServer.DeleteRootCategory + event.target.id}`).then(response => {
 
                 //console.log(response.data);
 
                 this.setState({
-                    Categories: new_categories_list
+                    Categories: categories
                 });
 
                 Toast.success(response.data.msg);
@@ -177,6 +194,66 @@ class IndexPage extends React.Component
 
             });
         }
+    };
+
+    /**
+     * @function onClickActiveButton
+     */
+    onClickActiveButton = async (event) =>
+    {
+        let categories = this.state.Categories.slice();
+        let category   = categories.find(category => category.id == event.target.id);
+
+        await Axios.patch(`${RouteServer.Root + RouteServer.ActiveRootCategory + event.target.id}`).then(response => {
+
+            //console.log(response.data);
+
+            category.statusCode = 1;
+            category.statusName = "فعال";
+
+            this.setState({
+                Categories: categories
+            });
+
+            Toast.success(response.data.msg);
+
+        }).catch(response => {
+
+            //console.log(response);
+
+            Toast.error(response.response.data.msg);
+
+        });
+    };
+
+    /**
+     * @function onClickInActiveButton
+     */
+    onClickInActiveButton = async (event) =>
+    {
+        let categories = this.state.Categories.slice();
+        let category   = categories.find(category => category.id == event.target.id);
+
+        await Axios.patch(`${RouteServer.Root + RouteServer.InActiveRootCategory + event.target.id}`).then(response => {
+
+            //console.log(response.data);
+
+            category.statusCode = 0;
+            category.statusName = "غیر فعال";
+
+            this.setState({
+                Categories: categories
+            });
+
+            Toast.success(response.data.msg);
+
+        }).catch(response => {
+
+            //console.log(response);
+
+            Toast.error(response.response.data.msg);
+
+        });
     }
 }
 

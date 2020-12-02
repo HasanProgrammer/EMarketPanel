@@ -37,3 +37,14 @@
     text-align: center;
     direction: ltr;
 }
+
+/*Button's Delete*/
+.action_button
+{
+    font-weight: normal !important;
+    width: 10em !important;
+    border-radius: 15px !important;
+    padding: 0.3em !important;
+    box-shadow: 0px 1px 3px gray;
+    font-size: 16px !important;
+}
