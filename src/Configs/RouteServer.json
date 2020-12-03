@@ -1,10 +1,19 @@
 {
-  "Root"                 : "https://localhost:5001"         ,
-  "AllRootCategory"      : "/admin/root-category"           ,
-  "CreateRootCategory"   : "/admin/root-category/create"    ,
-  "FindRootCategory"     : "/admin/root-category/find/"     ,
-  "EditRootCategory"     : "/admin/root-category/edit/"     ,
-  "DeleteRootCategory"   : "/admin/root-category/delete/"   ,
-  "ActiveRootCategory"   : "/admin/root-category/active/"   ,
-  "InActiveRootCategory" : "/admin/root-category/inactive/"
+  "Root"                 : "https://localhost:5001"            ,
+  "AllRootCategory"      : "/admin/root-category"              ,
+  "CreateRootCategory"   : "/admin/root-category/create"       ,
+  "FindRootCategory"     : "/admin/root-category/find/"        ,
+  "EditRootCategory"     : "/admin/root-category/edit/"        ,
+  "DeleteRootCategory"   : "/admin/root-category/delete/"      ,
+  "ActiveRootCategory"   : "/admin/root-category/active/"      ,
+  "InActiveRootCategory" : "/admin/root-category/inactive/"    ,
+
+  "AllCategory"          : "/admin/category"                   ,
+  "CreateCategory"       : "/admin/category/create"            ,
+  "FindCategory"         : "/admin/category/find/"             ,
+  "FindChilds"           : "/admin/root-category/childs/find/" ,
+  "EditCategory"         : "/admin/category/edit/"             ,
+  "DeleteCategory"       : "/admin/category/delete/"           ,
+  "ActiveCategory"       : "/admin/category/active/"           ,
+  "InActiveCategory"     : "/admin/category/inactive/"
 }

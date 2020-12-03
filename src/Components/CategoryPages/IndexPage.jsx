@@ -37,6 +37,22 @@ class IndexPage extends React.Component
     }
 
     /**
+     * @function componentDidMount
+     */
+    async componentDidMount()
+    {
+        await Axios.get(`${RouteServer.Root + RouteServer.AllCategory}`).then(response => {
+
+            this.setState({
+                Categories: response.data.body.categories
+            });
+
+        }).catch(response => {
+
+        });
+    }
+
+    /**
      * @function render
      */
     render()
@@ -59,7 +75,7 @@ class IndexPage extends React.Component
                         <div className="col-12">
                             <div className="card" style={{borderRadius: "0"}}>
                                 <div className="card-header">
-                                    <h4 style={{cursor: "default"}}>همه دسته بندی های اصلی</h4>
+                                    <h4 style={{cursor: "default"}}>همه دسته بندی ها</h4>
 
 
                                 </div>
@@ -74,7 +90,7 @@ class IndexPage extends React.Component
                                     </div>
 
                                     <div className="float-right">
-                                        <Link className="btn btn-success action_button" to={`${Route.CreateRootCategoryPage}`}>
+                                        <Link className="btn btn-success action_button" to={`${Route.CreateCategoryPage}`}>
                                             <span>ساخت دسته بندی جدید</span>
                                         </Link>
                                     </div>
@@ -89,6 +105,8 @@ class IndexPage extends React.Component
                                                             <input type="checkbox" style={{borderRadius: "0"}}/>
                                                         </div>
                                                     </th>
+                                                    <th className="cell">نام دسته بندی سرشاخه</th>
+                                                    <th className="cell">نام دسته بندی والد</th>
                                                     <th className="cell">نام دسته بندی</th>
                                                     <th className="cell">نام یکتای دسته بندی</th>
                                                     <th className="cell">وضعیت</th>
@@ -96,31 +114,37 @@ class IndexPage extends React.Component
                                                 </tr>
                                                 {
                                                     this.state.Categories.map(category => (
-                                                        <tr key={category.id}>
+                                                        <tr key={category.categoryId}>
                                                             <td className="cell">
                                                                 <div className="custom-checkbox custom-control">
                                                                     <input type="checkbox" style={{borderRadius: "0"}}/>
                                                                 </div>
                                                             </td>
                                                             <td className="cell">
-                                                                {category.name}
+                                                                {category.rootCategoryName}
                                                             </td>
                                                             <td className="cell">
-                                                                {category.slug}
+                                                                {category.parentCategoryName == null ? "ندارد" : category.parentCategoryName}
+                                                            </td>
+                                                            <td className="cell">
+                                                                {category.categoryName}
+                                                            </td>
+                                                            <td className="cell">
+                                                                {category.categorySlug}
                                                             </td>
                                                             <td className="cell">
                                                                 <div className="badge badge-success" style={BadgeStyle}>{category.statusName}</div>
                                                             </td>
                                                             <td className="cell">
-                                                                <Link id={category.id} onClick={this.onClickEditButton} to={`${Route.EditRootCategoryPage.replace(":id", category.id)}`} className="btn btn-warning action_button" style={{borderRadius: "0", }}>ویرایش</Link>
+                                                                <Link id={category.categoryId} onClick={this.onClickEditButton} to={`${Route.EditCategoryPage.replace(":id", category.categoryId)}`} className="btn btn-warning action_button" style={{borderRadius: "0", }}>ویرایش</Link>
                                                                 <span>{" "}</span>
                                                                 {
                                                                     category.statusCode == 0
-                                                                    ? (<button onClick={this.onClickActiveButton}   id={category.id} className="btn btn-success action_button" style={{borderRadius: "0", }}>فعال</button>)
-                                                                    : (<button onClick={this.onClickInActiveButton} id={category.id} className="btn btn-danger action_button"  style={{borderRadius: "0", }}>غیر فعال</button>)
+                                                                    ? (<button onClick={this.onClickActiveButton}   id={category.categoryId} className="btn btn-success action_button" style={{borderRadius: "0", }}>فعال</button>)
+                                                                    : (<button onClick={this.onClickInActiveButton} id={category.categoryId} className="btn btn-danger action_button"  style={{borderRadius: "0", }}>غیر فعال</button>)
                                                                 }
                                                                 <span>{" "}</span>
-                                                                <button onClick={this.onClickDeleteButton} id={category.id} className="btn btn-danger action_button" style={{borderRadius: "0", }}>حذف</button>
+                                                                <button onClick={this.onClickDeleteButton} id={category.categoryId} className="btn btn-danger action_button" style={{borderRadius: "0", }}>حذف</button>
                                                             </td>
                                                         </tr>
                                                     ))
@@ -137,26 +161,6 @@ class IndexPage extends React.Component
         );
     }
 
-    /**
-     * @function componentDidMount
-     */
-    async componentDidMount()
-    {
-        await Axios.get(`${RouteServer.Root + RouteServer.AllRootCategory}`).then(response => {
-
-            //console.log(response.data.body.categories);
-
-            this.setState({
-                Categories: response.data.body.categories
-            });
-
-        }).catch(response => {
-
-            //console.log(response);
-
-        });
-    }
-
     /*---------------------------------------------------------------CUSTOM---------------------------------------------------------------*/
 
     /**
@@ -164,7 +168,7 @@ class IndexPage extends React.Component
      */
     onClickEditButton = (event) =>
     {
-        localStorage.setItem("category", JSON.stringify(this.state.Categories.find(category => category.id == event.target.id)));
+        localStorage.setItem("category", JSON.stringify(this.state.Categories.find(category => category.categoryId == event.target.id)));
     };
 
     /**
@@ -179,15 +183,13 @@ class IndexPage extends React.Component
                 icon    : "info",
                 buttons : ["نه، مایل به حذف نمی باشم" , "بله ، کاملا اطمینان دارم"]
             }
-        ); 
+        );
 
         if(result === true)
         {
-            let categories = this.state.Categories.filter(category => category.id != event.target.id);
+            let categories = this.state.Categories.filter(category => category.categoryId != event.target.id);
 
-            await Axios.post(`${RouteServer.Root + RouteServer.DeleteRootCategory + event.target.id}`).then(response => {
-
-                //console.log(response.data);
+            await Axios.post(`${RouteServer.Root + RouteServer.DeleteCategory + event.target.id}`).then(response => {
 
                 this.setState({
                     Categories: categories
@@ -196,8 +198,6 @@ class IndexPage extends React.Component
                 Toast.success(response.data.msg);
 
             }).catch(response => {
-
-                //console.log(response);
 
                 Toast.error(response.response.data.msg);
 
@@ -211,11 +211,12 @@ class IndexPage extends React.Component
     onClickActiveButton = async (event) =>
     {
         let categories = this.state.Categories.slice();
-        let category   = categories.find(category => category.id == event.target.id);
+        let category   = categories.find(category => category.categoryId == event.target.id);
 
-        await Axios.patch(`${RouteServer.Root + RouteServer.ActiveRootCategory + event.target.id}`).then(response => {
+        console.log(category);
+        console.log(`${RouteServer.Root + RouteServer.InActiveCategory + event.target.id}`);
 
-            //console.log(response.data);
+        await Axios.patch(`${RouteServer.Root + RouteServer.ActiveCategory + event.target.id}`).then(response => {
 
             category.statusCode = 1;
             category.statusName = "فعال";
@@ -228,8 +229,6 @@ class IndexPage extends React.Component
 
         }).catch(response => {
 
-            //console.log(response);
-
             Toast.error(response.response.data.msg);
 
         });
@@ -241,11 +240,12 @@ class IndexPage extends React.Component
     onClickInActiveButton = async (event) =>
     {
         let categories = this.state.Categories.slice();
-        let category   = categories.find(category => category.id == event.target.id);
+        let category   = categories.find(category => category.categoryId == event.target.id);
 
-        await Axios.patch(`${RouteServer.Root + RouteServer.InActiveRootCategory + event.target.id}`).then(response => {
+        console.log(category);
+        console.log(`${RouteServer.Root + RouteServer.InActiveCategory + event.target.id}`);
 
-            //console.log(response.data);
+        await Axios.patch(`${RouteServer.Root + RouteServer.InActiveCategory + event.target.id}`).then(response => {
 
             category.statusCode = 0;
             category.statusName = "غیر فعال";
@@ -257,8 +257,6 @@ class IndexPage extends React.Component
             Toast.success(response.data.msg);
 
         }).catch(response => {
-
-            //console.log(response);
 
             Toast.error(response.response.data.msg);
 

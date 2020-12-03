@@ -6,9 +6,12 @@ import { BrowserRouter as Router , Switch , Route} from "react-router-dom";
 //Components
 import MasterPage from "./MasterPage";
 import HomePage   from "./HomePage";
-import CreatePage from "./RootCategoryPages/CreatePage"
-import EditPage   from "./RootCategoryPages/EditPage";
-import IndexPage  from "./RootCategoryPages/IndexPage";
+import CreateRootCategoryPage from "./RootCategoryPages/CreatePage"
+import EditRootCategoryPage   from "./RootCategoryPages/EditPage";
+import IndexRootCategoryPage  from "./RootCategoryPages/IndexPage";
+import CreateCategoryPage     from "./CategoryPages/CreatePage";
+import EditCategoryPage       from "./CategoryPages/EditPage";
+import IndexCategoryPage      from "./CategoryPages/IndexPage";
 
 //Configs
 import RouteConfig from "./../Configs/Route";
@@ -37,19 +40,33 @@ class Root extends React.Component
 
                     <MasterPage>
 
+                        {/*RootCategory*/}
                         <Route exact path={`${RouteConfig.HomePage}`}>
                             <HomePage/>
                         </Route>
 
                         <Route path={`${RouteConfig.AllRootCategoryPage}`}>
-                            <IndexPage/>
+                            <IndexRootCategoryPage/>
                         </Route>
 
                         <Route path={`${RouteConfig.CreateRootCategoryPage}`}>
-                            <CreatePage/>
+                            <CreateRootCategoryPage/>
                         </Route>
 
-                        <Route path={`${RouteConfig.EditRootCategoryPage}`} component={EditPage}/>
+                        <Route path={`${RouteConfig.EditRootCategoryPage}`} component={EditRootCategoryPage}/>
+                        {/*RootCategory*/}
+
+                        {/*Category*/}
+                        <Route path={`${RouteConfig.AllCategoryPage}`}>
+                            <IndexCategoryPage/>
+                        </Route>
+
+                        <Route path={`${RouteConfig.CreateCategoryPage}`}>
+                            <CreateCategoryPage/>
+                        </Route>
+
+                        <Route path={`${RouteConfig.EditCategoryPage}`} component={EditCategoryPage}/>
+                        {/*Category*/}
 
                     </MasterPage>
 

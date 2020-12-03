@@ -10,6 +10,8 @@ import RouteServer from "./../../Configs/RouteServer";
 //Plugins
 import Axios from "axios";
 import { toast as Toast } from "react-toastify";
+import {Link} from "react-router-dom";
+import Route from "../../Configs/Route";
 
 /**
  * @class HomePage
@@ -119,7 +121,9 @@ class EditPage extends React.Component
                                         <div className="form-group row mb-4">
                                             <label className="col-form-label text-md-right col-12 col-md-3 col-lg-3"/>
                                             <div className="col-sm-12 col-md-7">
-                                                <button onClick={this.EditCategory} type="button" className="btn btn-primary" style={ButtonEditCategoryStyle}>ویرایش دسته بندی</button>
+                                                <button onClick={this.EditCategory} type="button" className="btn btn-success action_button">ویرایش دسته بندی</button>
+                                                <span>{" "}</span>
+                                                <Link to={`${Route.AllRootCategoryPage}`} className="btn btn-primary action_button">برگشت</Link>
                                             </div>
                                         </div>
                                     </div>

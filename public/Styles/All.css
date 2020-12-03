@@ -42,9 +42,9 @@
 .action_button
 {
     font-weight: normal !important;
-    width: 10em !important;
-    border-radius: 15px !important;
-    padding: 0.3em !important;
-    box-shadow: 0px 1px 3px gray;
-    font-size: 16px !important;
+    width: 12em !important;
+    border-radius: 0 !important;
+    padding: 0.5em !important;
+    box-shadow: 0 0 0 0 !important;
+    font-size: 15px !important;
 }

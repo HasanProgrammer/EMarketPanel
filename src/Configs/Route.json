@@ -1,6 +1,10 @@
 {
-  "HomePage"               : "/"                      ,
-  "AllRootCategoryPage"    : "/root-category/all"     ,
-  "CreateRootCategoryPage" : "/root-category/create"  ,
-  "EditRootCategoryPage"   : "/root-category/edit/:id"
+  "HomePage"               : "/"                       ,
+  "AllRootCategoryPage"    : "/root-category/all"      ,
+  "CreateRootCategoryPage" : "/root-category/create"   ,
+  "EditRootCategoryPage"   : "/root-category/edit/:id" ,
+
+  "AllCategoryPage"        : "/category/all"           ,
+  "CreateCategoryPage"     : "/category/create"        ,
+  "EditCategoryPage"       : "/category/edit/:id"
 }
