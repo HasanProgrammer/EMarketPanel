@@ -142,9 +142,15 @@ class IndexPage extends React.Component
      */
     async componentDidMount()
     {
-        await Axios.get(`${RouteServer.Root + RouteServer.AllRootCategory}`).then(response => {
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        }
 
-            //console.log(response.data.body.categories);
+        await Axios.get(`${RouteServer.Root + RouteServer.AllRootCategory}`, Configs).then(response => {
+
+            console.log(response.data.body.categories);
 
             this.setState({
                 Categories: response.data.body.categories
@@ -152,7 +158,9 @@ class IndexPage extends React.Component
 
         }).catch(response => {
 
-            //console.log(response);
+            Toast.error(response?.response?.data?.msg);
+
+            console.log(response);
 
         });
     }

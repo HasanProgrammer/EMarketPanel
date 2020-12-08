@@ -15,5 +15,8 @@
   "EditCategory"         : "/admin/category/edit/"             ,
   "DeleteCategory"       : "/admin/category/delete/"           ,
   "ActiveCategory"       : "/admin/category/active/"           ,
-  "InActiveCategory"     : "/admin/category/inactive/"
+  "InActiveCategory"     : "/admin/category/inactive/"         ,
+
+
+  "Login"                : "/account/login"
 }

@@ -6,6 +6,7 @@ import { BrowserRouter as Router , Switch , Route} from "react-router-dom";
 //Components
 import MasterPage from "./MasterPage";
 import HomePage   from "./HomePage";
+import LoginPage              from "./AccountPages/LoginPage";
 import CreateRootCategoryPage from "./RootCategoryPages/CreatePage"
 import EditRootCategoryPage   from "./RootCategoryPages/EditPage";
 import IndexRootCategoryPage  from "./RootCategoryPages/IndexPage";
@@ -15,6 +16,10 @@ import IndexCategoryPage      from "./CategoryPages/IndexPage";
 
 //Configs
 import RouteConfig from "./../Configs/Route";
+import RegisterPage from "./AccountPages/RegisterPage";
+import {ToastContainer} from "react-toastify";
+import NavBar from "./Partials/Common/NavBar";
+import SideBar from "./Partials/Common/SideBar";
 
 /**
  * @class Root
@@ -37,6 +42,14 @@ class Root extends React.Component
         return (
             <Router>
                 <Switch>
+
+                    <Route path={`${RouteConfig.LoginPage}`}>
+                        <LoginPage/>
+                    </Route>
+
+                    {/*<Route path={`${RouteConfig.RegisterPage}`}>*/}
+                    {/*    <RegisterPage/>*/}
+                    {/*</Route>*/}
 
                     <MasterPage>
 

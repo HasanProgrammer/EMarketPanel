@@ -6,5 +6,8 @@
 
   "AllCategoryPage"        : "/category/all"           ,
   "CreateCategoryPage"     : "/category/create"        ,
-  "EditCategoryPage"       : "/category/edit/:id"
+  "EditCategoryPage"       : "/category/edit/:id"      ,
+
+  "LoginPage"              : "/login"                  ,
+  "RegisterPage"           : "/register"
 }
