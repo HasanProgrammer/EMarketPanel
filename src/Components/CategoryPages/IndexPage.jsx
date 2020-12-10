@@ -41,13 +41,26 @@ class IndexPage extends React.Component
      */
     async componentDidMount()
     {
-        await Axios.get(`${RouteServer.Root + RouteServer.AllCategory}`).then(response => {
+
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        };
+
+        await Axios.get(`${RouteServer.Root + RouteServer.AllCategory}`, Configs).then(response => {
 
             this.setState({
                 Categories: response.data.body.categories
             });
 
         }).catch(response => {
+
+            if(response?.response?.data?.code == 403)
+            {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
 
         });
     }
@@ -189,7 +202,13 @@ class IndexPage extends React.Component
         {
             let categories = this.state.Categories.filter(category => category.categoryId != event.target.id);
 
-            await Axios.post(`${RouteServer.Root + RouteServer.DeleteCategory + event.target.id}`).then(response => {
+            let Configs = {
+                headers : {
+                    "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+                }
+            };
+
+            await Axios.post(`${RouteServer.Root + RouteServer.DeleteCategory + event.target.id}`, null, Configs).then(response => {
 
                 this.setState({
                     Categories: categories
@@ -199,7 +218,12 @@ class IndexPage extends React.Component
 
             }).catch(response => {
 
-                Toast.error(response.response.data.msg);
+                if(response?.response?.data?.code == 403)
+                {
+                    window.location.href = `${Route.LoginPage}`;
+                    localStorage.setItem("Expired", "403");
+                }
+                else Toast.error(response.response.data.msg);
 
             });
         }
@@ -213,10 +237,13 @@ class IndexPage extends React.Component
         let categories = this.state.Categories.slice();
         let category   = categories.find(category => category.categoryId == event.target.id);
 
-        console.log(category);
-        console.log(`${RouteServer.Root + RouteServer.InActiveCategory + event.target.id}`);
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        };
 
-        await Axios.patch(`${RouteServer.Root + RouteServer.ActiveCategory + event.target.id}`).then(response => {
+        await Axios.patch(`${RouteServer.Root + RouteServer.ActiveCategory + event.target.id}`, null, Configs).then(response => {
 
             category.statusCode = 1;
             category.statusName = "فعال";
@@ -229,7 +256,12 @@ class IndexPage extends React.Component
 
         }).catch(response => {
 
-            Toast.error(response.response.data.msg);
+            if(response?.response?.data?.code == 403)
+            {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
+            else Toast.error(response.response.data.msg);
 
         });
     };
@@ -242,10 +274,13 @@ class IndexPage extends React.Component
         let categories = this.state.Categories.slice();
         let category   = categories.find(category => category.categoryId == event.target.id);
 
-        console.log(category);
-        console.log(`${RouteServer.Root + RouteServer.InActiveCategory + event.target.id}`);
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        };
 
-        await Axios.patch(`${RouteServer.Root + RouteServer.InActiveCategory + event.target.id}`).then(response => {
+        await Axios.patch(`${RouteServer.Root + RouteServer.InActiveCategory + event.target.id}`, null, Configs).then(response => {
 
             category.statusCode = 0;
             category.statusName = "غیر فعال";
@@ -258,7 +293,12 @@ class IndexPage extends React.Component
 
         }).catch(response => {
 
-            Toast.error(response.response.data.msg);
+            if(response?.response?.data?.code == 403)
+            {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
+            else Toast.error(response.response.data.msg);
 
         });
     }

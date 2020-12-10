@@ -53,7 +53,13 @@ class EditPage extends React.Component
         {
             let category = JSON.parse(localStorage.getItem("category"));
 
-            await Axios.get(`${RouteServer.Root + RouteServer.AllRootCategory}`).then(response => {
+            let Configs = {
+                headers : {
+                    "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+                }
+            };
+
+            await Axios.get(`${RouteServer.Root + RouteServer.AllRootCategory}`, Configs).then(response => {
 
                 this.setState({
                     RootCategories : response.data.body.categories,
@@ -66,6 +72,12 @@ class EditPage extends React.Component
                 });
 
             }).catch(response => {
+
+                if(response?.response?.data?.code == 403)
+                {
+                    window.location.href = `${Route.LoginPage}`;
+                    localStorage.setItem("Expired", "403");
+                }
 
             });
 
@@ -183,7 +195,13 @@ class EditPage extends React.Component
      */
     onSelectedOptionInSelectBoxRootCategory = async (event) =>
     {
-        await Axios.get(`${RouteServer.Root + RouteServer.FindChilds + event.target.value}`).then(response => {
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        };
+
+        await Axios.get(`${RouteServer.Root + RouteServer.FindChilds + event.target.value}`, Configs).then(response => {
 
             this.setState({
                 RootCategoryId   : parseInt(event.target.value),
@@ -249,30 +267,37 @@ class EditPage extends React.Component
             Status         : this.state.Status
         };
 
-        let Config = {
-            headers: {
-                "Content-Type" : "application/json"
+        let Configs = {
+            headers : {
+                "Content-Type"  : "application/json",
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
             }
         };
 
-        console.log(JSON.stringify(Data));
-
         if(this.state.Id != null)
         {
-            await Axios.patch(`${RouteServer.Root + RouteServer.EditCategory + this.state.Id}`, JSON.stringify(Data), Config).then(response => {
+            await Axios.patch(`${RouteServer.Root + RouteServer.EditCategory + this.state.Id}`, JSON.stringify(Data), Configs).then(response => {
 
                 Toast.success(response?.data?.msg);
 
             }).catch(response => {
 
-                Toast.error(response.response?.data?.msg);
-                if(typeof response?.response?.data?.body?.errors != "undefined")
+                if(response?.response?.data?.code == 403)
                 {
-                    response.response.data.body.errors.map(error => {
+                    window.location.href = `${Route.LoginPage}`;
+                    localStorage.setItem("Expired", "403");
+                }
+                else
+                {
+                    Toast.error(response.response?.data?.msg);
+                    if(typeof response?.response?.data?.body?.errors != "undefined")
+                    {
+                        response.response.data.body.errors.map(error => {
 
-                        Toast.error(error);
+                            Toast.error(error);
 
-                    });
+                        });
+                    }
                 }
 
             });

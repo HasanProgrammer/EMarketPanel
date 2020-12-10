@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 /*-------------------------------------------------------------------*/
 
@@ -9,8 +10,7 @@ import Route       from "./../../Configs/Route";
 import RouteServer from "./../../Configs/RouteServer";
 
 //Plugins
-import Axios    from "axios";
-import { Link } from "react-router-dom";
+import Axios from "axios";
 import { toast as Toast, ToastContainer } from "react-toastify";
 
 /**
@@ -44,8 +44,6 @@ class CreatePage extends React.Component
      */
     componentDidMount()
     {
-        //console.log( this.myRef.current.value );
-
         this.setState({
             Status: this.statusFieldRef.current.value
         });
@@ -56,8 +54,6 @@ class CreatePage extends React.Component
      */
     render()
     {
-        console.log(this.state.Status + " " + this.state.Name + " " + this.state.Slug);
-
         return (
             <div className="main-content">
                 <section className="section">
@@ -163,38 +159,41 @@ class CreatePage extends React.Component
      */
     CreateCategory = async () =>
     {
-        //console.log(`${RouteServer.Root + RouteServer.CreateRootCategory}`);
-
         let Data = {
             Name   : this.state.Name,
             Slug   : this.state.Slug,
             Status : this.state.Status
         };
 
-        let Config = {
-            headers: {
-                "Content-Type" : "application/json"
+        let Configs = {
+            headers : {
+                "Content-Type"  : "application/json",
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
             }
         };
 
-        await Axios.put(`${RouteServer.Root + RouteServer.CreateRootCategory}`, JSON.stringify(Data), Config).then(response => {
-
-            //console.log(response?.data?.msg);
+        await Axios.put(`${RouteServer.Root + RouteServer.CreateRootCategory}`, JSON.stringify(Data), Configs).then(response => {
 
             Toast.success(response?.data?.msg);
 
         }).catch(response => {
 
-            //console.log(response);
-
-            Toast.error(response.response?.data?.msg);
-            if(typeof response?.response?.data?.body?.errors != "undefined")
+            if(response?.response?.data?.code == 403)
             {
-                response.response.data.body.errors.map(error => {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
+            else
+            {
+                Toast.error(response.response?.data?.msg);
+                if(typeof response?.response?.data?.body?.errors != "undefined")
+                {
+                    response.response.data.body.errors.map(error => {
 
-                    Toast.error(error);
+                        Toast.error(error);
 
-                });
+                    });
+                }
             }
 
         });

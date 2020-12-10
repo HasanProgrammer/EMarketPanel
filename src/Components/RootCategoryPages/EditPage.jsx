@@ -45,8 +45,6 @@ class EditPage extends React.Component
     {
         if(localStorage.getItem("category") != null)
         {
-            //console.log( JSON.parse(localStorage.getItem("category")) );
-
             let category = JSON.parse(localStorage.getItem("category"));
 
             this.setState({
@@ -183,32 +181,37 @@ class EditPage extends React.Component
             Status : this.state.Status
         };
 
-        let Config = {
-            headers: {
-                "Content-Type" : "application/json"
+        let Configs = {
+            headers : {
+                "Content-Type"  : "application/json",
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
             }
         };
 
         if(this.state.Id != null)
         {
-            await Axios.patch(`${RouteServer.Root + RouteServer.EditRootCategory + this.state.Id}`, JSON.stringify(Data), Config).then(response => {
-
-                //console.log(response.data.msg);
+            await Axios.patch(`${RouteServer.Root + RouteServer.EditRootCategory + this.state.Id}`, JSON.stringify(Data), Configs).then(response => {
 
                 Toast.success(response.data.msg);
 
             }).catch(response => {
 
-                //console.log(response);
-
-                Toast.error(response.response.data?.msg);
-                if(typeof response.response.data?.body?.errors != "undefined")
+                if(response?.response?.data?.code == 403)
                 {
-                    response.response.data.body.errors.map(error => {
+                    window.location.href = `${Route.LoginPage}`;
+                    localStorage.setItem("Expired", "403");
+                }
+                else
+                {
+                    Toast.error(response.response.data?.msg);
+                    if(typeof response.response.data?.body?.errors != "undefined")
+                    {
+                        response.response.data.body.errors.map(error => {
 
-                        Toast.error(error);
+                            Toast.error(error);
 
-                    });
+                        });
+                    }
                 }
 
             });

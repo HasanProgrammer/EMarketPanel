@@ -48,7 +48,13 @@ class CreatePage extends React.Component
      */
     async componentDidMount()
     {
-        await Axios.get(`${RouteServer.Root + RouteServer.AllRootCategory}`).then(response => {
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        };
+
+        await Axios.get(`${RouteServer.Root + RouteServer.AllRootCategory}`, Configs).then(response => {
 
             this.setState({
                 Status         : parseInt(this.statusFieldRef.current.value),
@@ -57,7 +63,11 @@ class CreatePage extends React.Component
 
         }).catch(response => {
 
-
+            if(response?.response?.data?.code == 403)
+            {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
 
         });
     }
@@ -156,7 +166,13 @@ class CreatePage extends React.Component
      */
     onSelectedOptionInSelectBoxRootCategory = async (event) =>
     {
-        await Axios.get(`${RouteServer.Root + RouteServer.FindChilds + event.target.value}`).then(response => {
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        };
+
+        await Axios.get(`${RouteServer.Root + RouteServer.FindChilds + event.target.value}`, Configs).then(response => {
 
             this.setState({
                 RootCategory     : parseInt(event.target.value),
@@ -222,28 +238,35 @@ class CreatePage extends React.Component
             Status         : this.state.Status
         };
 
-        console.log(JSON.stringify(Data));
-
-        let Config = {
-            headers: {
-                "Content-Type" : "application/json"
+        let Configs = {
+            headers : {
+                "Content-Type"  : "application/json",
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
             }
         };
 
-        await Axios.put(`${RouteServer.Root + RouteServer.CreateCategory}`, JSON.stringify(Data), Config).then(response => {
+        await Axios.put(`${RouteServer.Root + RouteServer.CreateCategory}`, JSON.stringify(Data), Configs).then(response => {
 
             Toast.success(response?.data?.msg);
 
         }).catch(response => {
 
-            Toast.error(response.response?.data?.msg);
-            if(typeof response?.response?.data?.body?.errors != "undefined")
+            if(response?.response?.data?.code == 403)
             {
-                response.response.data.body.errors.map(error => {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
+            else
+            {
+                Toast.error(response.response?.data?.msg);
+                if(typeof response?.response?.data?.body?.errors != "undefined")
+                {
+                    response.response.data.body.errors.map(error => {
 
-                    Toast.error(error);
+                        Toast.error(error);
 
-                });
+                    });
+                }
             }
 
         });

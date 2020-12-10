@@ -10,8 +10,8 @@ import Route       from "./../../Configs/Route";
 import RouteServer from "./../../Configs/RouteServer";
 
 //Plugins
-import swal  from "sweetalert";
-import Axios from "axios";
+import swal     from "sweetalert";
+import Axios    from "axios";
 import { toast as Toast } from "react-toastify";
 
 /**
@@ -148,19 +148,20 @@ class IndexPage extends React.Component
             }
         }
 
-        await Axios.get(`${RouteServer.Root + RouteServer.AllRootCategory}`, Configs).then(response => {
-
-            console.log(response.data.body.categories);
+        Axios.get(`${RouteServer.Root + RouteServer.AllRootCategory}`, Configs).then(response => {
 
             this.setState({
-                Categories: response.data.body.categories
+                Categories: response.data?.body?.categories
             });
 
         }).catch(response => {
 
-            Toast.error(response?.response?.data?.msg);
-
-            console.log(response);
+            if(response?.response?.data?.code == 403)
+            {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
+            else Toast.error(response?.response?.data?.msg);
 
         });
     }
@@ -193,7 +194,13 @@ class IndexPage extends React.Component
         {
             let categories = this.state.Categories.filter(category => category.id != event.target.id);
 
-            await Axios.post(`${RouteServer.Root + RouteServer.DeleteRootCategory + event.target.id}`).then(response => {
+            let Configs = {
+                headers : {
+                    "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+                }
+            }
+
+            await Axios.post(`${RouteServer.Root + RouteServer.DeleteRootCategory + event.target.id}`, null, Configs).then(response => {
 
                 //console.log(response.data);
 
@@ -205,9 +212,12 @@ class IndexPage extends React.Component
 
             }).catch(response => {
 
-                //console.log(response);
-
-                Toast.error(response.response.data.msg);
+                if(response?.response?.data?.code == 403)
+                {
+                    window.location.href = `${Route.LoginPage}`;
+                    localStorage.setItem("Expired", "403");
+                }
+                else Toast.error(response.response.data.msg);
 
             });
         }
@@ -221,7 +231,13 @@ class IndexPage extends React.Component
         let categories = this.state.Categories.slice();
         let category   = categories.find(category => category.id == event.target.id);
 
-        await Axios.patch(`${RouteServer.Root + RouteServer.ActiveRootCategory + event.target.id}`).then(response => {
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        }
+
+        await Axios.patch(`${RouteServer.Root + RouteServer.ActiveRootCategory + event.target.id}`, null, Configs).then(response => {
 
             //console.log(response.data);
 
@@ -236,9 +252,12 @@ class IndexPage extends React.Component
 
         }).catch(response => {
 
-            //console.log(response);
-
-            Toast.error(response.response.data.msg);
+            if(response?.response?.data?.code == 403)
+            {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
+            else Toast.error(response.response.data.msg);
 
         });
     };
@@ -251,7 +270,13 @@ class IndexPage extends React.Component
         let categories = this.state.Categories.slice();
         let category   = categories.find(category => category.id == event.target.id);
 
-        await Axios.patch(`${RouteServer.Root + RouteServer.InActiveRootCategory + event.target.id}`).then(response => {
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        }
+
+        await Axios.patch(`${RouteServer.Root + RouteServer.InActiveRootCategory + event.target.id}`, null, Configs).then(response => {
 
             //console.log(response.data);
 
@@ -266,9 +291,12 @@ class IndexPage extends React.Component
 
         }).catch(response => {
 
-            //console.log(response);
-
-            Toast.error(response.response.data.msg);
+            if(response?.response?.data?.code == 403)
+            {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
+            else Toast.error(response.response.data.msg);
 
         });
     }

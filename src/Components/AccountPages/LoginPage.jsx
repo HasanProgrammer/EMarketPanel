@@ -95,17 +95,14 @@ class LoginPage extends React.Component
 
         await Axios.patch(`${RouteServer.Root + RouteServer.Login}`, JSON.stringify(Data), Config).then(response => {
 
-            //console.log(response?.data);
-
             Toast.success(response?.data?.msg);
 
             localStorage.setItem("Token", response?.data?.body?.token);
+            localStorage.removeItem("Expired");
 
             setTimeout(() => { window.location.href = `${Route.HomePage}` }, 1500);
 
         }).catch(response => {
-
-            //console.log(response?.response);
 
             Toast.error(response?.response?.data?.msg);
             if(typeof response?.response?.data?.body?.errors != "undefined")
