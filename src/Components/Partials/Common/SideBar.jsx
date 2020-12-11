@@ -82,6 +82,18 @@ class SideBar extends React.Component
                                 <i className="fas fa-meteor"/><span>دسته بندی ها</span>
                             </Link>
                         </li>
+
+                        <li className={`${window.location.pathname === RouteConfig.AllRolePage ? "active" : ""}`}>
+                            <Link onClick={this.onClickLink} className="nav-link" to={`${RouteConfig.AllRolePage}`}>
+                                <i className="fas fa-meteor"/><span>نقش های سیستمی</span>
+                            </Link>
+                        </li>
+
+                        <li className={`${window.location.pathname === RouteConfig.AllPermissionPage ? "active" : ""}`}>
+                            <Link onClick={this.onClickLink} className="nav-link" to={`${RouteConfig.AllPermissionPage}`}>
+                                <i className="fas fa-meteor"/><span>دسترسی های سیستمی</span>
+                            </Link>
+                        </li>
                     </ul>
                 </aside>
             </div>

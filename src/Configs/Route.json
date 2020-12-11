@@ -8,6 +8,14 @@
   "CreateCategoryPage"     : "/category/create"        ,
   "EditCategoryPage"       : "/category/edit/:id"      ,
 
+  "AllRolePage"            : "/role/all"               ,
+  "CreateRolePage"         : "/role/create"            ,
+  "EditRolePage"           : "/role/edit/:id"          ,
+
+  "AllPermissionPage"      : "/permission/all"         ,
+  "CreatePermissionPage"   : "/permission/create"      ,
+  "EditPermissionPage"     : "/permission/edit/:id"    ,
+
   "LoginPage"              : "/login"                  ,
   "RegisterPage"           : "/register"
 }

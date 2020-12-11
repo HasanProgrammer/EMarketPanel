@@ -17,6 +17,13 @@
   "ActiveCategory"       : "/admin/category/active/"           ,
   "InActiveCategory"     : "/admin/category/inactive/"         ,
 
+  "AllRole"              : "/admin/role"                       ,
+  "CreateRole"           : "/admin/role/create"                ,
+
+  "AllPermission"        : "/admin/permission"                 ,
+  "CreatePermission"     : "/admin/permission/create"          ,
+  "EditPermission"       : "/admin/permission/edit/"           ,
+  "DeletePermission"     : "/admin/permission/delete/"         ,
 
   "Login"                : "/account/login"
 }

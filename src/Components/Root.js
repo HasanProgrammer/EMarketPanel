@@ -7,12 +7,17 @@ import { BrowserRouter as Router , Switch , Route} from "react-router-dom";
 import MasterPage             from "./MasterPage";
 import HomePage               from "./HomePage";
 import LoginPage              from "./AccountPages/LoginPage";
-import CreateRootCategoryPage from "./RootCategoryPages/CreatePage"
+import CreateRootCategoryPage from "./RootCategoryPages/CreatePage";
 import EditRootCategoryPage   from "./RootCategoryPages/EditPage";
 import IndexRootCategoryPage  from "./RootCategoryPages/IndexPage";
 import CreateCategoryPage     from "./CategoryPages/CreatePage";
 import EditCategoryPage       from "./CategoryPages/EditPage";
 import IndexCategoryPage      from "./CategoryPages/IndexPage";
+import IndexRolePage          from "./RolePages/IndexPage";
+import CreateRolePage         from "./RolePages/CreatePage";
+import CreatePermissionPage   from "./PermissionPages/CreatePage";
+import EditPermissionPage     from "./PermissionPages/EditPage";
+import IndexPermissionPage    from "./PermissionPages/IndexPage";
 
 //Configs
 import RouteConfig  from "./../Configs/Route";
@@ -72,6 +77,28 @@ class Root extends React.Component
 
                         <Route path={`${RouteConfig.EditCategoryPage}`} component={EditCategoryPage}/>
                         {/*Category*/}
+
+                        {/*Role*/}
+                        <Route path={`${RouteConfig.AllRolePage}`}>
+                            <IndexRolePage/>
+                        </Route>
+
+                        <Route path={`${RouteConfig.CreateRolePage}`}>
+                            <CreateRolePage/>
+                        </Route>
+                        {/*Role*/}
+
+                        {/*Permission*/}
+                        <Route path={`${RouteConfig.AllPermissionPage}`}>
+                            <IndexPermissionPage/>
+                        </Route>
+
+                        <Route path={`${RouteConfig.CreatePermissionPage}`}>
+                            <CreatePermissionPage/>
+                        </Route>
+
+                        <Route path={`${RouteConfig.EditPermissionPage}`} component={EditPermissionPage}/>
+                        {/*Permission*/}
 
                     </MasterPage>
 

@@ -5,11 +5,11 @@ import React from "react";
 //Components
 
 //Configs
+import Route       from "../../Configs/Route";
 import RouteServer from "./../../Configs/RouteServer";
 
 //Plugins
 import Axios    from "axios";
-import Route    from "../../Configs/Route";
 import { Link } from "react-router-dom";
 import { toast as Toast } from "react-toastify";
 
