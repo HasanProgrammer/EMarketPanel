@@ -28,13 +28,6 @@ class SideBar extends React.Component
             <div className="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
 
-                    <div className="sidebar-brand">
-                        {/*<a href="">*/}
-                        {/*    <img alt="تصویر" src="/Assets/img/logo.png" className="header-logo"/>*/}
-                        {/*    <span className="logo-name">پنل ادمین</span>*/}
-                        {/*</a>*/}
-                    </div>
-
                     <ul className="sidebar-menu">
                         <li className="dropdown active" style={{display: "block"}}>
                             <div className="sidebar-profile">
@@ -43,25 +36,8 @@ class SideBar extends React.Component
                                 </div>
                                 <div className="siderbar-profile-details">
                                     <div className="siderbar-profile-name">حسن کرمی محب</div>
-                                    <div className="siderbar-profile-position">مدیر</div>
+                                    <br/>
                                 </div>
-                                {/*<div className="sidebar-profile-buttons">*/}
-                                {/*    <a className="tooltips waves-effect waves-block toggled" href="" data-toggle="tooltip" title="" data-original-title="پروفایل">*/}
-                                {/*        <i className="fas fa-user sidebarQuickIcon"/>*/}
-                                {/*    </a>*/}
-
-                                {/*    <a className="tooltips waves-effect waves-block" href="" data-toggle="tooltip" title="" data-original-title="پیام">*/}
-                                {/*        <i className="fas fa-envelope sidebarQuickIcon"/>*/}
-                                {/*    </a>*/}
-
-                                {/*    <a className="tooltips waves-effect waves-block" href="" data-toggle="tooltip" title="" data-original-title="گفتگو">*/}
-                                {/*        <i className="fas fa-comment-dots sidebarQuickIcon"/>*/}
-                                {/*    </a>*/}
-
-                                {/*    <a className="tooltips waves-effect waves-block" href="" data-toggle="tooltip" title="" data-original-title="خروج">*/}
-                                {/*        <i className="fas fa-share-square sidebarQuickIcon"/>*/}
-                                {/*    </a>*/}
-                                {/*</div>*/}
                             </div>
                         </li>
 
@@ -71,15 +47,9 @@ class SideBar extends React.Component
                             </Link>
                         </li>
 
-                        <li className={`${window.location.pathname === RouteConfig.AllRootCategoryPage ? "active" : ""}`}>
-                            <Link onClick={this.onClickLink} className="nav-link" to={`${RouteConfig.AllRootCategoryPage}`}>
-                                <i className="fas fa-meteor"/><span>دسته بندی های اصلی</span>
-                            </Link>
-                        </li>
-
-                        <li className={`${window.location.pathname === RouteConfig.AllCategoryPage ? "active" : ""}`}>
-                            <Link onClick={this.onClickLink} className="nav-link" to={`${RouteConfig.AllCategoryPage}`}>
-                                <i className="fas fa-meteor"/><span>دسته بندی ها</span>
+                        <li className={`${window.location.pathname === RouteConfig.AllUserPage ? "active" : ""}`}>
+                            <Link onClick={this.onClickLink} className="nav-link" to={`${RouteConfig.AllUserPage}`}>
+                                <i className="fas fa-meteor"/><span>کاربران سیستم</span>
                             </Link>
                         </li>
 
@@ -92,6 +62,18 @@ class SideBar extends React.Component
                         <li className={`${window.location.pathname === RouteConfig.AllPermissionPage ? "active" : ""}`}>
                             <Link onClick={this.onClickLink} className="nav-link" to={`${RouteConfig.AllPermissionPage}`}>
                                 <i className="fas fa-meteor"/><span>دسترسی های سیستمی</span>
+                            </Link>
+                        </li>
+
+                        <li className={`${window.location.pathname === RouteConfig.AllRootCategoryPage ? "active" : ""}`}>
+                            <Link onClick={this.onClickLink} className="nav-link" to={`${RouteConfig.AllRootCategoryPage}`}>
+                                <i className="fas fa-meteor"/><span>دسته بندی های اصلی</span>
+                            </Link>
+                        </li>
+
+                        <li className={`${window.location.pathname === RouteConfig.AllCategoryPage ? "active" : ""}`}>
+                            <Link onClick={this.onClickLink} className="nav-link" to={`${RouteConfig.AllCategoryPage}`}>
+                                <i className="fas fa-meteor"/><span>دسته بندی ها</span>
                             </Link>
                         </li>
                     </ul>

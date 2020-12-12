@@ -17,6 +17,13 @@
   "ActiveCategory"       : "/admin/category/active/"           ,
   "InActiveCategory"     : "/admin/category/inactive/"         ,
 
+  "AllUser"              : "/admin/user"                       ,
+  "AllPermissionForUser" : "/admin/user/permission/"           ,
+  "CreateUser"           : "/admin/user/create"                ,
+  "EditUser"             : "/admin/user/edit/"                 ,
+  "AssignPermission"     : "/admin/user/assign/permission/"    ,
+  "DeleteUser"           : "/admin/user/delete/"               ,
+
   "AllRole"              : "/admin/role"                       ,
   "CreateRole"           : "/admin/role/create"                ,
 

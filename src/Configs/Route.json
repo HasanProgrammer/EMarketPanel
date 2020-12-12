@@ -16,6 +16,10 @@
   "CreatePermissionPage"   : "/permission/create"      ,
   "EditPermissionPage"     : "/permission/edit/:id"    ,
 
+  "AllUserPage"            : "/user/all"               ,
+  "CreateUserPage"         : "/user/create"            ,
+  "EditUserPage"           : "/user/edit/:id"          ,
+
   "LoginPage"              : "/login"                  ,
   "RegisterPage"           : "/register"
 }

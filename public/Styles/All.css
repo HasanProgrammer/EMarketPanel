@@ -6,6 +6,12 @@
     cursor: default !important;
 }
 
+.modal
+{
+    width: 30% !important;
+    height: 50% !important;
+}
+
 /*Sweet Alert's Style*/
 .swal-modal
 {
