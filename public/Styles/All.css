@@ -12,6 +12,37 @@
     height: 50% !important;
 }
 
+.pagination
+{
+    padding: 1em !important;
+    border-radius: 0 !important;
+}
+
+.pagination li
+{
+    margin: 0.5em 0.5em !important;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.pagination .active
+{
+    background-color: lightgrey !important;
+}
+
+.pagination li a
+{
+    display: block;
+    width: 3em !important;
+    height: 3em !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    vertical-align: center !important;
+    padding-top: 0.5em !important;
+}
+
 /*Sweet Alert's Style*/
 .swal-modal
 {

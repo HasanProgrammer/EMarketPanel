@@ -116,7 +116,7 @@ class IndexPage extends React.Component
                                     </div>
 
                                     <div className="float-right">
-                                        <Link className="btn btn-success action_button" to={`${Route.CreateRolePage}`}>
+                                        <Link className="btn btn-success action_button" to={`${Route.CreateUserPage}`}>
                                             <span>ساخت کاربر جدید</span>
                                         </Link>
                                     </div>
@@ -152,7 +152,13 @@ class IndexPage extends React.Component
                                                                 }
                                                             </td>
                                                             <td className="cell">
+                                                                <br/>
                                                                 <button id={user.id} onClick={this.getAllCurrentUserPermissionsCanBeAssigned} className="btn btn-info action_button" style={{borderRadius: "0", }}>انتساب دسترسی</button>
+                                                                <br/>
+                                                                <br/>
+                                                                <button id={user.id} onClick={this.onClickEditButton} className="btn btn-warning action_button" style={{borderRadius: "0", }}>ویرایش</button>
+                                                                <br/>
+                                                                <br/>
                                                             </td>
                                                         </tr>
                                                     ))
@@ -200,6 +206,13 @@ class IndexPage extends React.Component
 
     /*---------------------------------------------------------------CUSTOM---------------------------------------------------------------*/
 
+    /**
+     * @function onClickEditButton
+     */
+    onClickEditButton = (event) =>
+    {
+        localStorage.setItem("user", JSON.stringify(this.state.Users.find(user => user.id == event.target.id)));
+    };
 
     AssignPermissions = async () =>
     {
@@ -219,12 +232,16 @@ class IndexPage extends React.Component
 
         await Axios.patch(`${RouteServer.Root + RouteServer.AssignPermission + this.state.TargetUser}`, JSON.stringify(Data), Configs).then(response => {
 
-            Toast.success(response?.data?.msg);
+            if(response?.data?.code == 201 || response?.data?.code == 200)
+                Toast.success(response?.data?.msg);
+            else
+                Toast.error(response?.data?.msg);
 
             let usersCopy  = this.state.Users?.slice();
             let userTarget = usersCopy.find(item => item.id == this.state.TargetUser);
 
             userTarget.permissions = this.state.SelectedPermission;
+
             this.setState({
                 Users : usersCopy
             });

@@ -18,6 +18,7 @@ import CreateRolePage         from "./RolePages/CreatePage";
 import CreatePermissionPage   from "./PermissionPages/CreatePage";
 import EditPermissionPage     from "./PermissionPages/EditPage";
 import IndexPermissionPage    from "./PermissionPages/IndexPage";
+import CreateUserPage         from "./UserPages/CreatePage";
 import IndexUserPage          from "./UserPages/IndexPage";
 
 //Configs
@@ -104,6 +105,10 @@ class Root extends React.Component
                         {/*User*/}
                         <Route path={`${RouteConfig.AllUserPage}`}>
                             <IndexUserPage/>
+                        </Route>
+
+                        <Route path={`${RouteConfig.CreateUserPage}`}>
+                            <CreateUserPage/>
                         </Route>
                         {/*User*/}
 
