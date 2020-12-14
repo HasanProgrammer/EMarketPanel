@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b7d3930c-0b9a-4530-a4f0-3603cd26ed20" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/Styles/All.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/Styles/All.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/PermissionPages/IndexPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/PermissionPages/IndexPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Root.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Root.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/UserPages/IndexPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/UserPages/IndexPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +82,7 @@
       <workItem from="1607013291120" duration="15429000" />
       <workItem from="1607184892143" duration="2064000" />
       <workItem from="1607330588305" duration="94213000" />
-      <workItem from="1607937670749" duration="10758000" />
+      <workItem from="1607937670749" duration="11570000" />
     </task>
     <servers />
   </component>

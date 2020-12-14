@@ -61,7 +61,7 @@ class IndexPage extends React.Component
             }
         };
 
-        await Axios.get(`${RouteServer.Root + RouteServer.AllPermission}`, Configs).then(response => {
+        await Axios.get(`${RouteServer.Root + RouteServer.AllPermission + "?PageNumber=1&CountSizePerPage=" + PaginationConfig.CountItemPerPage}`, Configs).then(response => {
 
             let paginationionHeader = JSON.parse(response.headers["x-pagination"]);
 
