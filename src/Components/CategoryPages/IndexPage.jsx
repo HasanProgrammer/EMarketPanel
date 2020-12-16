@@ -5,14 +5,23 @@ import { Link } from "react-router-dom";
 
 //Components
 
+/*-------------------------------------------------------------------*/
+
 //Configs
-import Route       from "./../../Configs/Route";
-import RouteServer from "./../../Configs/RouteServer";
+import Route            from "./../../Configs/Route";
+import RouteServer      from "./../../Configs/RouteServer";
+import PaginationConfig from "../../Configs/Pagination.json";
+
+/*-------------------------------------------------------------------*/
 
 //Plugins
-import swal  from "sweetalert";
-import Axios from "axios";
+import swal          from "sweetalert";
+import Axios         from "axios";
+import ReactPaginate from "react-paginate";
+
 import { toast as Toast } from "react-toastify";
+
+/*-------------------------------------------------------------------*/
 
 /**
  * @class HomePage
@@ -24,7 +33,12 @@ class IndexPage extends React.Component
      */
     state =
     {
-        Categories: []
+        Categories        : [],
+        CurrentPageNumber : null,
+        CountSizePerPage  : null,
+        TotalPages        : null,
+        HasNextPage       : false,
+        HasPrevPage       : false
     };
 
     /**
@@ -41,17 +55,23 @@ class IndexPage extends React.Component
      */
     async componentDidMount()
     {
-
         let Configs = {
             headers : {
                 "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
             }
         };
 
-        await Axios.get(`${RouteServer.Root + RouteServer.AllCategory}`, Configs).then(response => {
+        await Axios.get(`${RouteServer.Root + RouteServer.AllCategory + "?PageNumber=1&CountSizePerPage=" + PaginationConfig.CountItemPerPage}`, Configs).then(response => {
+
+            let paginationionHeader = JSON.parse(response.headers["x-pagination"]);
 
             this.setState({
-                Categories: response.data.body.categories
+                Categories        : response.data.body.categories,
+                CurrentPageNumber : paginationionHeader?.CurrentPage,
+                CountSizePerPage  : paginationionHeader?.CountSizePerPage,
+                TotalPages        : paginationionHeader?.TotalPages,
+                HasNextPage       : paginationionHeader?.HasNext,
+                HasPrevPage       : paginationionHeader?.HasPrev
             });
 
         }).catch(response => {
@@ -79,6 +99,26 @@ class IndexPage extends React.Component
         {
             borderRadius: "0"
         };
+
+        let Pagination = null;
+        if(this.state.TotalPages > 0)
+        {
+            Pagination = <ReactPaginate
+                            className="pagination"
+                            previousLabel={'قبلی'}
+                            nextLabel={'بعدی'}
+                            breakLabel={'...'}
+                            breakClassName={'break-me'}
+                            pageCount={this.state.TotalPages}
+                            marginPagesDisplayed={3}
+                            pageRangeDisplayed={5}
+                            containerClassName={'pagination'}
+                            subContainerClassName={'pages pagination'}
+                            activeClassName={'active'}
+
+                            onPageChange={this.onClickPaginateLink}
+                        />
+        }
 
         return (
             <div className="main-content">
@@ -170,11 +210,44 @@ class IndexPage extends React.Component
                         </div>
                     </div>
                 </section>
+                {Pagination}
             </div>
         );
     }
 
     /*---------------------------------------------------------------CUSTOM---------------------------------------------------------------*/
+
+    onClickPaginateLink = async (page) =>
+    {
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        };
+
+        await Axios.get(`${RouteServer.Root + RouteServer.AllCategory + "?PageNumber=" +  ( page.selected + 1 ) + "&CountSizePerPage=" + PaginationConfig.CountItemPerPage}`, Configs).then(response => {
+
+            let paginationionHeader = JSON.parse(response.headers["x-pagination"]);
+
+            this.setState({
+                Categories        : response?.data?.body?.categories,
+                CurrentPageNumber : paginationionHeader?.CurrentPage,
+                CountSizePerPage  : paginationionHeader?.CountSizePerPage,
+                TotalPages        : paginationionHeader?.TotalPages,
+                HasNextPage       : paginationionHeader?.HasNext,
+                HasPrevPage       : paginationionHeader?.HasPrev
+            });
+
+        }).catch(response => {
+
+            if(response?.response?.data?.code == 403)
+            {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
+
+        });
+    }
 
     /**
      * @function onClickEditButton

@@ -100,6 +100,26 @@ class IndexPage extends React.Component
             borderRadius: "0"
         };
 
+        let Pagination = null;
+        if(this.state.TotalPages > 0)
+        {
+            Pagination = <ReactPaginate
+                            className="pagination"
+                            previousLabel={'قبلی'}
+                            nextLabel={'بعدی'}
+                            breakLabel={'...'}
+                            breakClassName={'break-me'}
+                            pageCount={this.state.TotalPages}
+                            marginPagesDisplayed={3}
+                            pageRangeDisplayed={5}
+                            containerClassName={'pagination'}
+                            subContainerClassName={'pages pagination'}
+                            activeClassName={'active'}
+
+                            onPageChange={this.onClickPaginateLink}
+                        />
+        }
+
         return (
             <div className="main-content">
                 <section className="section">
@@ -174,23 +194,8 @@ class IndexPage extends React.Component
                         </div>
                     </div>
 
-                    <ReactPaginate
-                        className="pagination"
-                        previousLabel={'قبلی'}
-                        nextLabel={'بعدی'}
-                        breakLabel={'...'}
-                        breakClassName={'break-me'}
-                        pageCount={this.state.TotalPages}
-                        marginPagesDisplayed={3}
-                        pageRangeDisplayed={5}
-                        containerClassName={'pagination'}
-                        subContainerClassName={'pages pagination'}
-                        activeClassName={'active'}
-
-                        onPageChange={this.onClickPaginateLink}
-                    />
-
                 </section>
+                {Pagination}
             </div>
         );
     }

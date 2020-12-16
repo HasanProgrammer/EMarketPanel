@@ -8,16 +8,19 @@ import { Link } from "react-router-dom";
 /*-------------------------------------------------------------------*/
 
 //Configs
-import Route       from "./../../Configs/Route";
-import RouteServer from "./../../Configs/RouteServer";
+import Route            from "./../../Configs/Route";
+import RouteServer      from "./../../Configs/RouteServer";
+import PaginationConfig from "./../../Configs/Pagination";
 import "react-responsive-modal/styles.css";
 
 /*-------------------------------------------------------------------*/
 
 //Plugins
-import swal      from "sweetalert";
-import Axios     from "axios";
-import { Modal } from "react-responsive-modal";
+import swal          from "sweetalert";
+import Axios         from "axios";
+import ReactPaginate from "react-paginate";
+
+import { Modal }          from "react-responsive-modal";
 import { toast as Toast } from "react-toastify";
 
 /*-------------------------------------------------------------------*/
@@ -36,7 +39,13 @@ class IndexPage extends React.Component
         TargetUser         : null, /*برای ارسال به سمت سرور*/
         Permissions        : [],   /*دسترسی هایی که می توان به کاربر فعلی منسوب کرد*/
         SelectedPermission : [],   /*دسترسی های انتساب داده شده به کاربر*/
-        IsOpenModal        : false
+        IsOpenModal        : false,
+
+        CurrentPageNumber  : null,
+        CountSizePerPage   : null,
+        TotalPages         : null,
+        HasNextPage        : false,
+        HasPrevPage        : false
     };
 
     /**
@@ -59,10 +68,17 @@ class IndexPage extends React.Component
             }
         };
 
-        await Axios.get(`${RouteServer.Root + RouteServer.AllUser}`, Configs).then(response => {
+        await Axios.get(`${RouteServer.Root + RouteServer.AllUser + "?PageNumber=1&CountSizePerPage=" + PaginationConfig.CountItemPerPage}`, Configs).then(response => {
+
+            let paginationionHeader = JSON.parse(response.headers["x-pagination"]);
 
             this.setState({
-                Users : response?.data?.body?.users
+                Users             : response?.data?.body?.users,
+                CurrentPageNumber : paginationionHeader?.CurrentPage,
+                CountSizePerPage  : paginationionHeader?.CountSizePerPage,
+                TotalPages        : paginationionHeader?.TotalPages,
+                HasNextPage       : paginationionHeader?.HasNext,
+                HasPrevPage       : paginationionHeader?.HasPrev
             });
 
         }).catch(response => {
@@ -94,6 +110,26 @@ class IndexPage extends React.Component
         const ModalStyle =
         {
             width : "50em"
+        }
+
+        let Pagination = null;
+        if(this.state.TotalPages > 0)
+        {
+            Pagination = <ReactPaginate
+                            className="pagination"
+                            previousLabel={'قبلی'}
+                            nextLabel={'بعدی'}
+                            breakLabel={'...'}
+                            breakClassName={'break-me'}
+                            pageCount={this.state.TotalPages}
+                            marginPagesDisplayed={3}
+                            pageRangeDisplayed={5}
+                            containerClassName={'pagination'}
+                            subContainerClassName={'pages pagination'}
+                            activeClassName={'active'}
+
+                            onPageChange={this.onClickPaginateLink}
+                        />
         }
 
         return (
@@ -172,6 +208,8 @@ class IndexPage extends React.Component
                     </div>
                 </section>
 
+                {Pagination}
+
                 <Modal open={this.state.IsOpenModal} onClose={this.onCloseModal} center>
                     <div style={ModalStyle}>
                         <br/>
@@ -205,6 +243,38 @@ class IndexPage extends React.Component
     }
 
     /*---------------------------------------------------------------CUSTOM---------------------------------------------------------------*/
+
+    onClickPaginateLink = async (page) =>
+    {
+        let Configs = {
+            headers : {
+                "Authorization" : `${"Bearer " + localStorage.getItem("Token")}`
+            }
+        };
+
+        await Axios.get(`${RouteServer.Root + RouteServer.AllUser + "?PageNumber=" +  ( page.selected + 1 ) + "&CountSizePerPage=" + PaginationConfig.CountItemPerPage}`, Configs).then(response => {
+
+            let paginationionHeader = JSON.parse(response.headers["x-pagination"]);
+
+            this.setState({
+                Users             : response?.data?.body?.users,
+                CurrentPageNumber : paginationionHeader?.CurrentPage,
+                CountSizePerPage  : paginationionHeader?.CountSizePerPage,
+                TotalPages        : paginationionHeader?.TotalPages,
+                HasNextPage       : paginationionHeader?.HasNext,
+                HasPrevPage       : paginationionHeader?.HasPrev
+            });
+
+        }).catch(response => {
+
+            if(response?.response?.data?.code == 403)
+            {
+                window.location.href = `${Route.LoginPage}`;
+                localStorage.setItem("Expired", "403");
+            }
+
+        });
+    }
 
     /**
      * @function onClickEditButton
